@@ -1,0 +1,14 @@
+{
+  "name": "rank-choice",
+  "version": "1.0.0",
+  "description": "rank choice calculator",
+  "main": "index.js",
+  "author": "Kasey Powers",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn node ./index.js"
+  },
+  "dependencies": {
+    "csv-parse": "^4.12.0"
+  }
+}
