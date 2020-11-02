@@ -1,4 +1,8 @@
-const { displayResults } = require("./displayFns");
+const {
+  displayResults,
+  displayCurrentVotes,
+  victory,
+} = require("./displayFns");
 // store each option
 let options = false;
 let longestName = 0;
@@ -71,15 +75,25 @@ function getCurrentResults() {
   return counts;
 }
 
-function eliminateLastPlace(counts) {
+function eliminateLastPlace(counts, firstCount) {
   const lowestCount = Math.min(
     ...options
       .map((option) => (option && counts[option]) || 0)
       .filter((count) => count > 0)
   );
-  const optionsToRemove = options
-    .filter((opt) => opt && counts[opt] <= lowestCount)
-    .map((option) => options.indexOf(option));
+
+  const namesToRemove = options.filter(
+    (opt) => opt && counts[opt] <= lowestCount
+  );
+
+  const displayNamesToRemove = firstCount
+    ? namesToRemove
+    : namesToRemove.filter((opt) => opt && counts[opt] > 0);
+  console.log(`Removing these options: [${displayNamesToRemove.join(", ")}]`);
+
+  const optionsToRemove = namesToRemove.map((option) =>
+    options.indexOf(option)
+  );
   for (let i = 0; i < votes.length; i += 1) {
     votes[i] = votes[i].filter((val) => optionsToRemove.indexOf(val) < 0);
   }
@@ -96,6 +110,7 @@ function getResults() {
   let firstCount = true;
   let hasWinner = false;
   while (!hasWinner) {
+    displayCurrentVotes(votes, options);
     const counts = getCurrentResults();
     displayResults(counts, votesToWin, firstCount);
     // check for winner
@@ -105,8 +120,14 @@ function getResults() {
         hasWinner = option;
       }
     });
-    eliminateLastPlace(counts);
     firstCount = false;
+    if (!hasWinner) {
+      eliminateLastPlace(counts, firstCount);
+      console.log("-----------------\n");
+    } else {
+      victory();
+      console.log(hasWinner);
+    }
   }
 }
 

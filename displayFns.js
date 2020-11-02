@@ -1,3 +1,19 @@
+function displayCurrentVotes(votes, options) {
+  console.log(`Current votes: (count ${votes.length})`);
+  votes.forEach((vote) => {
+    if (vote.length <= 0) {
+      console.log("[]");
+    } else {
+      const names = vote.map((index) => options[index]);
+      console.log(
+        `[ ${names[0]} ], ${names.slice(1, 3).join(", ")}${
+          names.length > 3 ? "..." : ""
+        }`
+      );
+    }
+  });
+}
+
 function displayResults(counts, votesToWin, firstCount) {
   // TODO: this math might change if a vote has all its options elliminated? would the 50% be calculated with them still there or of votes remaining?
   let useOptions = Object.keys(counts);
@@ -55,6 +71,26 @@ function displayResults(counts, votesToWin, firstCount) {
   rows.forEach((row) => console.log(row));
 }
 
+const winnerLines = [
+  " __     __ __            __                                ",
+  "|  \\   |  \\  \\          |  \\                               ",
+  "| ▓▓   | ▓▓\\▓▓ _______ _| ▓▓_    ______   ______  __    __ ",
+  "| ▓▓   | ▓▓  \\/       \\   ▓▓ \\  /      \\ /      \\|  \\  |  \\",
+  " \\▓▓\\ /  ▓▓ ▓▓  ▓▓▓▓▓▓▓\\▓▓▓▓▓▓ |  ▓▓▓▓▓▓\\  ▓▓▓▓▓▓\\ ▓▓  | ▓▓",
+  "  \\▓▓\\  ▓▓| ▓▓ ▓▓       | ▓▓ __| ▓▓  | ▓▓ ▓▓   \\▓▓ ▓▓  | ▓▓",
+  "   \\▓▓ ▓▓ | ▓▓ ▓▓_____  | ▓▓|  \\ ▓▓__/ ▓▓ ▓▓     | ▓▓__/ ▓▓",
+  "    \\▓▓▓  | ▓▓\\▓▓     \\  \\▓▓  ▓▓\\▓▓    ▓▓ ▓▓      \\▓▓    ▓▓",
+  "     \\▓    \\▓▓ \\▓▓▓▓▓▓▓   \\▓▓▓▓  \\▓▓▓▓▓▓ \\▓▓      _\\▓▓▓▓▓▓▓",
+  "                                                 |  \\__| ▓▓",
+  "                                                  \\▓▓    ▓▓",
+  "                                                   \\▓▓▓▓▓▓ ",
+];
+function victory() {
+  winnerLines.forEach((ln) => console.log(ln));
+}
+
 module.exports = {
+  displayCurrentVotes,
   displayResults,
+  victory,
 };
